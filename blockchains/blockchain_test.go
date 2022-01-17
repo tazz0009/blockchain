@@ -43,17 +43,17 @@ type testCase struct {
  * 5 Block 생성
  * tom0001 : 30 -> tazz0009
 //  */
-// func TestBlockChain_send(t *testing.T) {
-// 	tc := testCase{"tazz0009", "tom0001", 50}
-// 	blockchain := blockchains.ContinueBlockChain(tc.address)
-// 	defer blockchain.Database.Close()
+func TestBlockChain_send(t *testing.T) {
+	tc := testCase{"tazz0009", "tom0001", 30}
+	blockchain := blockchains.ContinueBlockChain(tc.address)
+	defer blockchain.Database.Close()
 
-// 	tx := blockchains.NewTransaction(tc.address, tc.sendTo, tc.sendAmount, blockchain)
-// 	blockchain.AddBlock([]*blockchains.Transaction{tx})
-// }
+	tx := blockchains.NewTransaction(tc.address, tc.sendTo, tc.sendAmount, blockchain)
+	blockchain.AddBlock([]*blockchains.Transaction{tx})
+}
 
 func TestBlockChain_getBalance(t *testing.T) {
-	tc := testCase{"jane0001", "tom0001", 50}
+	tc := testCase{"tazz0009", "tom0001", 50}
 	blockchain := blockchains.ContinueBlockChain(tc.address)
 	defer blockchain.Database.Close()
 
@@ -96,3 +96,14 @@ func TestBlockChain_getBalance(t *testing.T) {
 // 		}
 // 	}
 // }
+
+func TestBlockChain_FindUnspentTransactions(t *testing.T) {
+	tc := testCase{"tazz0009", "tom0001", 50}
+	blockchain := blockchains.ContinueBlockChain(tc.address)
+	defer blockchain.Database.Close()
+
+	unspentTxs := blockchain.FindUnspentTransactions(tc.address)
+	for _, tx := range unspentTxs {
+		fmt.Println(tx.String())
+	}
+}
